@@ -50,7 +50,8 @@ private
         btnFrag3 = (Button) findViewById(R.id.btnFrag3);
         FragLayout = (LinearLayout) findViewById(R.id.FragLayout);
 
-//        f1 = (Frag_One) findViewById(R.id.frag1);  //Q: Why won't this work for fragments?  Does the fragment even exist in R.java? _____________
+//        f1 = (Frag_One) findViewById(R.id.frag1);  //Q: Why won't this work for fragments?  Does the fragment even exist in R.java?
+//        The View of the fragment will be null. The fragments will be in the Fragment Manager; thus, before we call the findViewById function, we create the fragment manager object, then add the fragment into the R.java.
 
     //5a.  We actually have to create the fragments ourselves.  We left R behind when we took control of rendering.
         f1 = new Frag_One();
