@@ -137,15 +137,23 @@ private
             Toast.makeText(getApplicationContext(), "f2 null reached", Toast.LENGTH_SHORT).show();
         }
 
-
-        else {
+        else if (f2.isAdded()){
             FragmentTransaction ft = fm.beginTransaction();
             ft.replace(R.id.FragLayout, f2);
             ft.addToBackStack ("myFrag2");  //Q: What is the back stack and why do we do this? The addToBackStack() allows the fragment to gp back to the previous fragment (committing the transaction to the back stack) on the back button pressed.
             ft.commit();
-            Toast.makeText(getApplicationContext(), "f2 else reached", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "f2 from f1 reached", Toast.LENGTH_SHORT).show();
         }
-        // Added Code End
+
+
+//        else {
+//            FragmentTransaction ft = fm.beginTransaction();
+//            ft.replace(R.id.FragLayout, f2);
+//            ft.addToBackStack ("myFrag2");  //Q: What is the back stack and why do we do this? The addToBackStack() allows the fragment to gp back to the previous fragment (committing the transaction to the back stack) on the back button pressed.
+//            ft.commit();
+//            Toast.makeText(getApplicationContext(), "f2 else reached", Toast.LENGTH_SHORT).show();
+//        }
+//        // Added Code End
 
     }
 
@@ -153,25 +161,24 @@ private
     public void showFrag3() {
 
         // Added Code
-        if (f3 == null) {
-            FragmentTransaction ft = fm.beginTransaction ();
+        if (!f3.isAdded()) {
+            FragmentTransaction ft = fm.beginTransaction ();   //Create a reference to a fragment transaction.
             ft.add(R.id.FragLayout, f3, "tag3");
+            ft.detach(f1);   //what would happen if f1, f2, or f3 were null?  how would we check and fix this?
+            ft.detach(f2);
+            ft.attach(f3);
+            ft.addToBackStack("myFrag3");
             ft.commit();
         }
         else if (f2 == null){
-            FragmentTransaction ft = fm.beginTransaction ();
+            FragmentTransaction ft = fm.beginTransaction ();   //Create a reference to a fragment transaction.
             ft.add(R.id.FragLayout, f2, "tag2");
+            ft.detach(f1);   //what would happen if f1, f2, or f3 were null?  how would we check and fix this?
+            ft.detach(f2);
+            ft.attach(f3);
+            ft.addToBackStack("myFrag3");
             ft.commit();
         }
-
-        FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
-
-        ft.detach(f1);   //what would happen if f1, f2, or f3 were null?  how would we check and fix this?
-        ft.detach(f2);
-        ft.attach(f3);
-        ft.addToBackStack("myFrag3");
-        ft.commit();
-
         // Added Code End
 
     }
