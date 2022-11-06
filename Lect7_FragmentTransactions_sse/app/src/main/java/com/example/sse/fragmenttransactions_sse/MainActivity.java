@@ -60,7 +60,9 @@ private
 
     //5b. Grab a reference to the Activity's Fragment Manager, Every Activity has one!
        fm = getFragmentManager ();  //that was easy.
-//         fm = getSupportFragmentManager();  // **When would you use this instead?? A: __________________
+//         fm = getSupportFragmentManager();  // **When would you use this instead??
+//         A: getSupportFragmentManager() does the same thing as the getFragmentManager() function. The difference is that getSupportFragmentManager() is used for devices below API 14, while getFragmentManager() is
+//          used for devices with API >= 14. Thus. getSupportFragmentManager() is often used when we try to deliver newer features to old platforms.
 
 
     //5c. Now we can "plop" fragment(s) into our container.
