@@ -8,9 +8,11 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -51,7 +53,7 @@ private
         FragLayout = (LinearLayout) findViewById(R.id.FragLayout);
 
 //        f1 = (Frag_One) findViewById(R.id.frag1);  //Q: Why won't this work for fragments?  Does the fragment even exist in R.java?
-//        The View of the fragment will be null. The fragments will be in the Fragment Manager; thus, before we call the findViewById function, we create the fragment manager object, then add the fragment into the R.java.
+//        A: The View of the fragment will be null. The fragments will be in the Fragment Manager; thus, before we call the findViewById function, we create the fragment manager object, then add the fragment into the R.java.
 
     //5a.  We actually have to create the fragments ourselves.  We left R behind when we took control of rendering.
         f1 = new Frag_One();
@@ -68,16 +70,17 @@ private
     //5c. Now we can "plop" fragment(s) into our container.
     // starting with fragment 1 (f1)
         FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
-        ft.add(R.id.FragLayout, f1, "tag1");  //now we have added our fragement to our Activity programmatically.  The other fragments exist, but have not been added yet.
+        ft.add(R.id.FragLayout, f1, "tag1");  //now we have added our fragment to our Activity programmatically.  The other fragments exist, but have not been added yet.
+
         ft.addToBackStack ("myFrag1");  //why do we do this?
         ft.commit ();  //don't forget to commit your changes.  It is a transaction after all.
 
-    btnFrag1.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            showFrag1();
-        }
-    });
+        btnFrag1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFrag1();
+            }
+        });
 
         btnFrag2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,34 +98,81 @@ private
 
     }
 
-public void showFrag1() {
-    f1 = (Frag_One) fm.findFragmentByTag("tag1");   //what should we do if f1 doesn't exist anymore?  How do we check and how do we fix?
-    FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
+    public void showFrag1() {
 
-    ft.hide(f2);
-    ft.hide(f3);
-    ft.show(f1);   //why does this not *always* crash?
-    ft.commit();
+        // Added Code
+        f1 = (Frag_One) fm.findFragmentByTag("tag1");   //what should we do if f1 doesn't exist anymore?  How do we check and how do we fix?
+        FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
+        if (!f1.isAdded()){
+            ft.add(R.id.FragLayout, f1, "tag1");
+            ft.addToBackStack("myFrag1");
+            ft.hide(f2);
+            ft.hide(f3);
+            ft.show(f1);
+            ft.commit();
+        }
+        else{
+            ft.hide(f2);
+            ft.hide(f3);
+            ft.show(f1);   //why does this not *always* crash?
+            ft.commit();
+            Toast.makeText(getApplicationContext(), "f1 reached", Toast.LENGTH_SHORT).show();
+        }
+        // Added Code End
+
 }
 
     public void showFrag2() {
 
-        if (f2 == null)
-          f2 = new Frag_Two();
+//        if (f2 == null)
+//          f2 = new Frag_Two();
 
-        FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction and start the transaction.
-        ft.replace(R.id.FragLayout, f2);
-        ft.addToBackStack ("myFrag2");  //Q: What is the back stack and why do we do this? _______________
-        ft.commit();
+        // Added Code
+        if (!f2.isAdded()){
+            FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction and start the transaction.
+            ft.add(R.id.FragLayout, f2);
+            ft.replace(R.id.FragLayout, f2);
+            ft.addToBackStack ("myFrag2");
+            ft.commit();
+            Toast.makeText(getApplicationContext(), "f2 null reached", Toast.LENGTH_SHORT).show();
+        }
+
+
+        else {
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.FragLayout, f2);
+            ft.addToBackStack ("myFrag2");  //Q: What is the back stack and why do we do this? The addToBackStack() allows the fragment to gp back to the previous fragment (committing the transaction to the back stack) on the back button pressed.
+            ft.commit();
+            Toast.makeText(getApplicationContext(), "f2 else reached", Toast.LENGTH_SHORT).show();
+        }
+        // Added Code End
+
     }
 
 
     public void showFrag3() {
 
+        // Added Code
+        if (f3 == null) {
+            FragmentTransaction ft = fm.beginTransaction ();
+            ft.add(R.id.FragLayout, f3, "tag3");
+            ft.commit();
+        }
+        else if (f2 == null){
+            FragmentTransaction ft = fm.beginTransaction ();
+            ft.add(R.id.FragLayout, f2, "tag2");
+            ft.commit();
+        }
+
         FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
+
         ft.detach(f1);   //what would happen if f1, f2, or f3 were null?  how would we check and fix this?
         ft.detach(f2);
         ft.attach(f3);
+        ft.addToBackStack("myFrag3");
         ft.commit();
+
+        // Added Code End
+
     }
 }
