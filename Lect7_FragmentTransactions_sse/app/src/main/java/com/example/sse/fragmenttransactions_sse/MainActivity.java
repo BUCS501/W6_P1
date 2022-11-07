@@ -101,36 +101,10 @@ private
     public void showFrag1() {
 
         // Added Code
-//        if (!f3.isDetached()){
-//            f1 = (Frag_One) fm.findFragmentByTag("tag1");   //what should we do if f1 doesn't exist anymore?  How do we check and how do we fix?
-//            FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
-////            ft.add(R.id.FragLayout, f1, "tag1");
-//            ft.addToBackStack("myFrag1");
-//            ft.detach(f3);
-//            ft.attach(f1);
-//            ft.commit();
-//        }
-//        else if (f2.isVisible()){
-//            f1 = (Frag_One) fm.findFragmentByTag("tag1");   //what should we do if f1 doesn't exist anymore?  How do we check and how do we fix?
-//            FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
-////            ft.add(R.id.FragLayout, f1, "tag1");
-//            ft.addToBackStack("myFrag1");
-//            ft.replace(R.id.FragLayout, f1);
-//            ft.commit();
-//        }
-//        else{
-//            f1 = (Frag_One) fm.findFragmentByTag("tag1");   //what should we do if f1 doesn't exist anymore?  How do we check and how do we fix?
-//            FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
-//            ft.addToBackStack("myFrag1");
-//            ft.hide(f2);
-//            ft.hide(f3);
-//            ft.show(f1);
-//            ft.commit();
-//        }
-        // Added Code End
         if (f1.isDetached()){
             f1 = (Frag_One) fm.findFragmentByTag("tag1");   //what should we do if f1 doesn't exist anymore?  How do we check and how do we fix?
             FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
+            ft.detach(f2);
             ft.detach(f3);
             ft.attach(f1);
             ft.hide(f3);
@@ -149,18 +123,17 @@ private
         else if (f1.isHidden()){
             f1 = (Frag_One) fm.findFragmentByTag("tag1");   //what should we do if f1 doesn't exist anymore?  How do we check and how do we fix?
             FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
+            if (f1.isDetached()){
+                ft.detach(f2);
+                ft.detach(f3);
+                ft.attach(f1);
+            }
             ft.hide(f2);
             ft.show(f1);
             ft.commit();
             Toast.makeText(getApplicationContext(), "1 hidden", Toast.LENGTH_SHORT).show();
         }
-//        f1 = (Frag_One) fm.findFragmentByTag("tag1");   //what should we do if f1 doesn't exist anymore?  How do we check and how do we fix?
-//        FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
-//        ft.addToBackStack("myFrag1");
-//        ft.hide(f2);
-//        ft.hide(f3);
-//        ft.show(f1);
-//        ft.commit();
+        // Added Code End
 }
 
     public void showFrag2() {
@@ -169,34 +142,13 @@ private
 //          f2 = new Frag_Two();
 
         // Added Code
-//        if (f1.isVisible()){
-//            FragmentTransaction ft = fm.beginTransaction();
-//            ft.add(R.id.FragLayout, f2);
-//            ft.replace(R.id.FragLayout, f2);
-//            ft.addToBackStack ("myFrag2");  //Q: What is the back stack and why do we do this? The addToBackStack() allows the fragment to gp back to the previous fragment (committing the transaction to the back stack) on the back button pressed.
-//            ft.commit();
-//            Toast.makeText(getApplicationContext(), "f2 from f1 reached", Toast.LENGTH_SHORT).show();
-//        }
-//        else if (!f3.isDetached()){
-//            FragmentTransaction ft = fm.beginTransaction();
-//            ft.add(R.id.FragLayout, f2);
-////            ft.replace(R.id.FragLayout, f2);
-//            ft.detach(f3);
-//            ft.attach(f2);
-//            ft.addToBackStack ("myFrag2");  //Q: What is the back stack and why do we do this? The addToBackStack() allows the fragment to gp back to the previous fragment (committing the transaction to the back stack) on the back button pressed.
-//            ft.commit();
-//            Toast.makeText(getApplicationContext(), "f2 from f3 reached", Toast.LENGTH_SHORT).show();
-//        }
-//        // Added Code End
-//        if (!f2.isAdded()){
-//            FragmentTransaction ft = fm.beginTransaction();
-//            ft.replace(R.id.FragLayout, f2);
-//            ft.addToBackStack ("myFrag2");  //Q: What is the back stack and why do we do this? The addToBackStack() allows the fragment to gp back to the previous fragment (committing the transaction to the back stack) on the back button pressed.
-//            ft.commit();
-//        }
-
         if(f2.isHidden()){
             FragmentTransaction ft = fm.beginTransaction();
+            if(f2.isDetached()){
+                ft.detach(f1);
+                ft.detach(f3);
+                ft.attach(f2);
+            }
             ft.hide(f1);
             ft.show(f2);
             ft.commit();
@@ -204,6 +156,7 @@ private
         }
         else if (f2.isDetached()){
             FragmentTransaction ft = fm.beginTransaction();
+            ft.detach(f1);
             ft.detach(f3);
             ft.attach(f2);
             ft.show(f2);
@@ -218,33 +171,13 @@ private
             Toast.makeText(getApplicationContext(), "2 else", Toast.LENGTH_SHORT).show();
 
         }
+        // Added Code Ended
     }
 
 
     public void showFrag3() {
 
         // Added Code
-
-//        if (!f2.isAdded()){
-//            FragmentTransaction ft = fm.beginTransaction ();   //Create a reference to a fragment transaction.
-//            ft.add(R.id.FragLayout, f2, "tag2");
-//            ft.detach(f1);   //what would happen if f1, f2, or f3 were null?  how would we check and fix this?
-//            ft.detach(f2);
-//            ft.attach(f3);
-//            ft.addToBackStack("myFrag3");
-//            ft.commit();
-//        }
-//        if (!f3.isAdded()) {
-//            FragmentTransaction ft = fm.beginTransaction ();   //Create a reference to a fragment transaction.
-//            ft.add(R.id.FragLayout, f3, "tag3");
-//            ft.detach(f1);   //what would happen if f1, f2, or f3 were null?  how would we check and fix this? The bottom fragment will display nothing. To fix this problem, we need to make sure that every fragment are added.
-//            ft.detach(f2);
-//            ft.attach(f3);
-//            ft.addToBackStack("myFrag3");
-//            ft.commit();
-//            Toast.makeText(getApplicationContext(), "f3 added reached", Toast.LENGTH_SHORT).show();
-//        }
-        // Added Code End
         if (!f3.isAdded()){
             FragmentTransaction ft = fm.beginTransaction ();   //Create a reference to a fragment transaction.
             ft.add(R.id.FragLayout, f3, "tag3");
@@ -255,12 +188,12 @@ private
             ft.commit();
         }
         FragmentTransaction ft = fm.beginTransaction ();   //Create a reference to a fragment transaction.
-//        ft.add(R.id.FragLayout, f3, "tag3");
         ft.detach(f1);   //what would happen if f1, f2, or f3 were null?  how would we check and fix this? The bottom fragment will display nothing. To fix this problem, we need to make sure that every fragment are added.
         ft.detach(f2);
         ft.attach(f3);
         ft.show(f3);
         ft.addToBackStack("myFrag3");
         ft.commit();
+        // Added Code End
     }
 }
